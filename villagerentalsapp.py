@@ -11,6 +11,7 @@ class VillageRentalsApp:
         self.create_menu()
         self.show_welcome_message()
 
+    # Showing all the action that the user could use from the menu
     def create_menu(self):
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
@@ -30,6 +31,7 @@ class VillageRentalsApp:
         menubar.add_cascade(label="Rental", menu=rental_menu)
         rental_menu.add_command(label="Process Rental", command=self.process_rental)
 
+    # Connects to the DataBase
     def connect_db(self):
         try:
             conn = mysql.connector.connect(
@@ -43,6 +45,7 @@ class VillageRentalsApp:
             messagebox.showerror("Error", str(e))
             return None
 
+    # Add Equipment action that the user may choose
     def add_equipment(self):
         self.clear_frame()
         tk.Label(self.root, text="Add Equipment", font=('Arial', 16)).pack(pady=10)
@@ -70,6 +73,8 @@ class VillageRentalsApp:
         tk.Button(self.root, text="Add Equipment", command=self.save_equipment).pack(pady=10)
         tk.Button(self.root, text="Back", command=self.go_back).pack(pady=10)
 
+    # Save Equipment action that the user may choose
+    # Get all the data from the user and save them to the database
     def save_equipment(self):
         equipment_id = self.equipment_id_entry.get()
         category_id = self.category_id_entry.get()
@@ -88,7 +93,9 @@ class VillageRentalsApp:
 
         messagebox.showinfo("Success", "Equipment added successfully!")
         self.clear_frame()
-
+        
+    # Delete Equipment action that the user may choose
+    # Delete exist equipment from the database depends on users
     def delete_equipment(self):
         self.clear_frame()
         tk.Label(self.root, text="Delete Equipment", font=('Arial', 16)).pack(pady=10)
@@ -100,6 +107,7 @@ class VillageRentalsApp:
         tk.Button(self.root, text="Delete Equipment", command=self.remove_equipment).pack(pady=10)
         tk.Button(self.root, text="Back", command=self.go_back).pack(pady=10)
 
+    # Remove an exist equipment from the database base on user
     def remove_equipment(self):
         equipment_id = self.del_equipment_id_entry.get()
         
@@ -114,6 +122,7 @@ class VillageRentalsApp:
         messagebox.showinfo("Success", "Equipment deleted successfully!")
         self.clear_frame()
 
+    # Adding a new customer to the database
     def add_customer(self):
         self.clear_frame()
         tk.Label(self.root, text="Add Customer", font=('Arial', 16)).pack(pady=10)
@@ -141,6 +150,7 @@ class VillageRentalsApp:
         tk.Button(self.root, text="Add Customer", command=self.save_customer).pack(pady=10)
         tk.Button(self.root, text="Back", command=self.go_back).pack(pady=10)
 
+    # Save the customer to the database
     def save_customer(self):
         customer_id = self.customer_id_entry.get()
         first_name = self.first_name_entry.get()
@@ -160,6 +170,7 @@ class VillageRentalsApp:
         messagebox.showinfo("Success", "Customer added successfully!")
         self.clear_frame()
 
+    # Show all cutomer's detail from the database
     def view_all_customers(self):
         self.clear_frame()
         tk.Label(self.root, text="All Customers", font=('Arial', 16)).pack(pady=10)
@@ -184,6 +195,7 @@ class VillageRentalsApp:
 
         tk.Button(self.root, text="Back", command=self.go_back).pack(pady=10)
 
+    # Show equipment details from the database 
     def view_all_equipment(self):
         self.clear_frame()
         tk.Label(self.root, text="All Equipment", font=('Arial', 16)).pack(pady=10)
@@ -208,6 +220,7 @@ class VillageRentalsApp:
 
         tk.Button(self.root, text="Back", command=self.go_back).pack(pady=10)
 
+    # The rentail will be store into the database base on user's action
     def process_rental(self):
         self.clear_frame()
         tk.Label(self.root, text="Process Rental", font=('Arial', 16)).pack(pady=10)
@@ -244,6 +257,7 @@ class VillageRentalsApp:
         tk.Button(self.root, text="Process Rental", command=self.save_rental).pack(pady=10)
         tk.Button(self.root, text="Back", command=self.go_back).pack(pady=10)
 
+    # daving rental detial into the database
     def save_rental(self):
         rental_id = self.rental_id_entry.get()
         customer_id = self.rental_customer_id_entry.get()
@@ -270,6 +284,8 @@ class VillageRentalsApp:
         messagebox.showinfo("Success", "Rental processed successfully!")
         self.clear_frame()
 
+    # Calculat for the toal cost of the retail
+    # Reads data from the database then do the calculation
     def calculate_rental_cost(self):
         equipment_id = self.rental_equipment_id_entry.get()
         rental_date = self.rental_date_entry.get()
@@ -289,8 +305,10 @@ class VillageRentalsApp:
                 total_cost = rental_days * daily_rate
                 self.cost_label.config(text=f"{total_cost:.2f}")
             else:
+                # Showing messages
                 messagebox.showerror("Error", "Equipment ID not found!")
-    
+                
+    # Showing messages 
     def show_welcome_message(self):
         tk.Label(self.root, text="Welcome to Village Rentals!", font=('Arial', 24)).pack(pady=20)
         tk.Label(self.root, text="Please use the menu to navigate through the options.", font=('Arial', 16)).pack(pady=10)
@@ -299,7 +317,7 @@ class VillageRentalsApp:
     def clear_frame(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-
+    # Return to previous page
     def go_back(self):
         self.clear_frame()
         self.create_menu()
